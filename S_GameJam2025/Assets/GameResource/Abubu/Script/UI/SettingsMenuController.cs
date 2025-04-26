@@ -148,20 +148,18 @@ public class SettingsMenuController : MonoBehaviour
     {
         closeBtn.interactable = false;
 
-        var seq = DOTween.Sequence();
+        HideAllSubPanels();
 
+        var seq = DOTween.Sequence();
         seq.Append(settingsPanelRT
             .DOScale(0.94f, 0.08f)
             .SetEase(Ease.InSine));
-
         seq.Append(settingsPanelRT
             .DOScale(0.5f, 0.45f)
             .SetEase(Ease.InBack));
-
         seq.Join(settingsPanelRT
             .DOAnchorPosY(-Screen.height, 0.45f)
             .SetEase(Ease.InBack));
-
         seq.Join(settingsPanelRT
             .DORotate(new Vector3(0, 0, 15f), 0.45f)
             .SetEase(Ease.InBack));
@@ -169,19 +167,25 @@ public class SettingsMenuController : MonoBehaviour
         seq.OnComplete(() =>
         {
             settingsPanel.SetActive(false);
-            categoryPanel.SetActive(false);
-            closeBtn.gameObject.SetActive(false);
             settingsBtn.gameObject.SetActive(true);
 
+            // Transform をリセット
             settingsPanelRT.anchoredPosition = Vector2.zero;
             settingsPanelRT.localScale = Vector3.one;
             settingsPanelRT.localRotation = Quaternion.identity;
-            closeBtn.interactable = true;
-            ResetButtonScalesInstant();
-        });
 
-        seq.Play();
+            closeBtn.interactable = true;
+        });
     }
+
+    private void HideAllSubPanels()
+    {
+        categoryPanel.SetActive(false);
+        soundPanel.SetActive(false);
+        resolutionPanel.SetActive(false);
+        graphicsPanel.SetActive(false);
+    }
+
 
     private void TransitionPanels(GameObject fromPanel, GameObject toPanel)
     {
@@ -253,7 +257,7 @@ public class SettingsMenuController : MonoBehaviour
         foreach (var r in availableResolutions)
         {
             int hz = Mathf.RoundToInt((float)r.refreshRateRatio.numerator / r.refreshRateRatio.denominator);
-            options.Add($"{r.width}×{r.height}@{hz}Hz");
+            options.Add($"{r.width}×{r.height}");
         }
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);

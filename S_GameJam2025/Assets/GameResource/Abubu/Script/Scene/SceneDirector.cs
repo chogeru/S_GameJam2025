@@ -31,6 +31,14 @@ namespace AbubuResource.Scene
         [LabelText("補間カーブ"), Tooltip("スライド時のイージングカーブ設定")]
         [SerializeField] private AnimationCurve slideCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);  // イージングカーブ
 
+        [Title("スライドトランジション設定")]
+        [Required, SerializeField]
+        private PanelChildAnimator panelAnimator;
+        [SerializeField,Tooltip("中央で静止する秒数")]
+        float centerPause = 0.6f;
+        [SerializeField,Tooltip("パネルが滑り始めてから子画像アニメを再生するまでの遅延秒数")]
+        float childAnimDelay = 0.3f;
+
         private float panelWidth;
 
         private void Awake()
@@ -46,7 +54,6 @@ namespace AbubuResource.Scene
         {
 #if UNITY_EDITOR
             [HorizontalGroup("Row", 90), HideLabel, PreviewField(64)]
-            [Tooltip("ロードしたいシーンアセットをここにドラッグ&ドロップ")]
             public SceneAsset sceneAsset;
 #endif
             [HorizontalGroup("Row")]
@@ -70,24 +77,59 @@ namespace AbubuResource.Scene
             StartCoroutine(LoadWithTransition(buildIndex));
         }
 
-        private IEnumerator LoadWithTransition(string sceneName)
+        IEnumerator LoadWithTransition(string sceneName)
         {
-            yield return Slide(panelWidth, 0f);  // 画面外→中央
-            var op = SceneManager.LoadSceneAsync(sceneName);
+            Application.backgroundLoadingPriority = ThreadPriority.Low;
+
+            var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            op.allowSceneActivation = false;
+
+            StartCoroutine(PlayAfterDelay());
+            yield return Slide(panelWidth, 0f);
+
+            while (op.progress < 0.9f) yield return null;
+
+            if (centerPause > 0f) yield return new WaitForSeconds(centerPause);
+
+            yield return Slide(0f, -panelWidth);
+
+            op.allowSceneActivation = true;
             while (!op.isDone) yield return null;
-            yield return Slide(0f, -panelWidth);  // 中央→画面外
+
+            Application.backgroundLoadingPriority = ThreadPriority.Normal;
             ResetPanel();
+            panelAnimator?.Stop();
         }
+
 
         private IEnumerator LoadWithTransition(int buildIndex)
         {
-            yield return Slide(panelWidth, 0f);
-            var op = SceneManager.LoadSceneAsync(buildIndex);
-            while (!op.isDone) yield return null;
-            yield return Slide(0f, -panelWidth);
-            ResetPanel();
-        }
+            Application.backgroundLoadingPriority = ThreadPriority.Low;
 
+            var op = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Single);
+            op.allowSceneActivation = false;
+
+            StartCoroutine(PlayAfterDelay());
+            yield return Slide(panelWidth, 0f);
+
+            while (op.progress < 0.9f) yield return null;
+
+            if (centerPause > 0f) yield return new WaitForSeconds(centerPause);
+
+            yield return Slide(0f, -panelWidth);
+
+            op.allowSceneActivation = true;
+            while (!op.isDone) yield return null;
+
+            Application.backgroundLoadingPriority = ThreadPriority.Normal;
+            ResetPanel();
+            panelAnimator?.Stop();
+        }
+        IEnumerator PlayAfterDelay()
+        {
+            yield return new WaitForSeconds(childAnimDelay);
+            panelAnimator?.Play();
+        }
         private IEnumerator Slide(float fromX, float toX)
         {
             float elapsed = 0f;
