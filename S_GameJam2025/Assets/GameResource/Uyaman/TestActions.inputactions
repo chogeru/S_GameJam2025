@@ -1,0 +1,66 @@
+{
+    "name": "TestActions",
+    "maps": [
+        {
+            "name": "RhythmGame",
+            "id": "bb9a2e76-b3b4-4d3b-a809-72a340f4ef09",
+            "actions": [
+                {
+                    "name": "Curve",
+                    "type": "Button",
+                    "id": "49a9c71c-b8ef-4f93-92ee-090283ad671d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Item",
+                    "type": "Button",
+                    "id": "f68d46fc-be3e-41a1-9416-b691293f6579",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c5f318ee-9700-4b02-8946-8a29e02284a5",
+                    "path": "<Keyboard>/#(P)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Curve",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a560ad3-e9c0-4fe5-8df4-33f771772202",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "TestControlScheme",
+            "bindingGroup": "TestControlScheme",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
