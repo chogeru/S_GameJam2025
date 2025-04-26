@@ -3,6 +3,7 @@
     "com.annulusgames.u-pools": "https://github.com/AnnulusGames/uPools.git?path=/Assets/uPools",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
+    "com.svermeulen.extenject": "9.1.0",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.feature.2d": "2.0.1",
     "com.unity.ide.rider": "3.0.36",
@@ -53,6 +54,14 @@
       "url": "http://package.openupm.com",
       "scopes": [
         "com.cysharp.unitask"
+      ],
+      "overrideBuiltIns": true
+    },
+    {
+      "name": "Zn",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.svermeulen.extenject"
       ],
       "overrideBuiltIns": true
     }
