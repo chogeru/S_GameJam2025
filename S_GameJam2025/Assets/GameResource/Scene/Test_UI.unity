@@ -2288,6 +2288,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4634430741897773124, guid: bc6654844a7b49f4d95b60a873339918, type: 3}
       insertIndex: -1
       addedObject: {fileID: 934165855}
+    - targetCorrespondingSourceObject: {fileID: 4634430741897773124, guid: bc6654844a7b49f4d95b60a873339918, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 934165858}
   m_SourcePrefab: {fileID: 100100000, guid: bc6654844a7b49f4d95b60a873339918, type: 3}
 --- !u!224 &934165852 stripped
 RectTransform:
@@ -2354,6 +2357,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &934165858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934165853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf15c22067327d744992d0710a98c806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  sfxId: 1
 --- !u!1 &979087480
 GameObject:
   m_ObjectHideFlags: 0
@@ -4010,6 +4035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsBtn: {fileID: 2027215779}
   settingsPanel: {fileID: 2092162331}
+  settingsPanelRT: {fileID: 2092162332}
   categoryPanel: {fileID: 1860965014}
   closeBtn: {fileID: 934165855}
   soundBtn: {fileID: 22562786}
@@ -4875,7 +4901,7 @@ GameObject:
   - component: {fileID: 1860965017}
   - component: {fileID: 1860965016}
   m_Layer: 0
-  m_Name: SettingScreenPanel (1)
+  m_Name: 'SettingScreenPanel '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5669,6 +5695,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7756511234567908375, guid: 3321fd1adacc0ef4590e754024b5c078, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2027215779}
+    - targetCorrespondingSourceObject: {fileID: 7756511234567908375, guid: 3321fd1adacc0ef4590e754024b5c078, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2027215782}
   m_SourcePrefab: {fileID: 100100000, guid: 3321fd1adacc0ef4590e754024b5c078, type: 3}
 --- !u!224 &2027215775 stripped
 RectTransform:
@@ -5735,6 +5764,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2027215782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027215776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf15c22067327d744992d0710a98c806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  sfxId: 1
 --- !u!1 &2041184998
 GameObject:
   m_ObjectHideFlags: 0

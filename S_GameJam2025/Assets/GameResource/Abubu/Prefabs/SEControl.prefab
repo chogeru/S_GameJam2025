@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: SEControl
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: a63ffe2bd815ec445ba45329d2f05d90, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -48,3 +48,4 @@ MonoBehaviour:
   - Id: 1
     Clip: {fileID: 8300000, guid: 779477d04272ec341a21c8436c95ca1e, type: 3}
     PoolSize: 10
+  _sfxMixerGroup: {fileID: 0}

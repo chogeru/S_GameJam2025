@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using Sirenix.OdinInspector;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 namespace AbubuResource.Scene
 {
     [DisallowMultipleComponent]
@@ -17,6 +19,27 @@ namespace AbubuResource.Scene
         [InfoBox("Project ビューからシーンアセットをドラッグして登録", InfoMessageType.Info)]
         [SerializeField]
         private List<SceneEntry> scenes = new List<SceneEntry>();
+
+        [Title("スライドトランジション設定")]
+        [Required, SerializeField]
+        private RectTransform slidePanel;
+
+        [SerializeField, Min(0f)]
+        private float slideDuration = 1f;
+
+        [BoxGroup("スライドトランジション設定")]
+        [LabelText("補間カーブ"), Tooltip("スライド時のイージングカーブ設定")]
+        [SerializeField] private AnimationCurve slideCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);  // イージングカーブ
+
+        private float panelWidth;
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+            Canvas.ForceUpdateCanvases();
+            panelWidth = slidePanel.rect.width;
+            slidePanel.anchoredPosition = new Vector2(panelWidth, 0f);
+        }
 
         [Serializable]
         public class SceneEntry : ISceneInfo
@@ -37,8 +60,53 @@ namespace AbubuResource.Scene
             public string Name => sceneName;
         }
 
-        public void Load(string sceneName) => SceneManager.LoadScene(sceneName);
-        public void Load(int buildIndex) => SceneManager.LoadScene(buildIndex);
+        public void Load(string sceneName)
+        {
+            StartCoroutine(LoadWithTransition(sceneName));
+        }
+
+        public void Load(int buildIndex)
+        {
+            StartCoroutine(LoadWithTransition(buildIndex));
+        }
+
+        private IEnumerator LoadWithTransition(string sceneName)
+        {
+            yield return Slide(panelWidth, 0f);  // 画面外→中央
+            var op = SceneManager.LoadSceneAsync(sceneName);
+            while (!op.isDone) yield return null;
+            yield return Slide(0f, -panelWidth);  // 中央→画面外
+            ResetPanel();
+        }
+
+        private IEnumerator LoadWithTransition(int buildIndex)
+        {
+            yield return Slide(panelWidth, 0f);
+            var op = SceneManager.LoadSceneAsync(buildIndex);
+            while (!op.isDone) yield return null;
+            yield return Slide(0f, -panelWidth);
+            ResetPanel();
+        }
+
+        private IEnumerator Slide(float fromX, float toX)
+        {
+            float elapsed = 0f;
+            while (elapsed < slideDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / slideDuration);
+                float eval = slideCurve.Evaluate(t);
+                float x = Mathf.Lerp(fromX, toX, eval);
+                slidePanel.anchoredPosition = new Vector2(x, 0f);
+                yield return null;
+            }
+            slidePanel.anchoredPosition = new Vector2(toX, 0f);
+        }
+
+        private void ResetPanel()
+        {
+            slidePanel.anchoredPosition = new Vector2(panelWidth, 0f);
+        }
 
         /// <summary>現在アクティブなシーンをリロード</summary>
         public void ReloadCurrent()
