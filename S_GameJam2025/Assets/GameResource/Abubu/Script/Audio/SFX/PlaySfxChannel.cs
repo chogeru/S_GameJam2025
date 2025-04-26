@@ -1,21 +1,23 @@
 using System;
 using UnityEngine;
-
-[CreateAssetMenu(menuName = "Audio/PlaySfxChannel")]
-public class PlaySfxChannel : ScriptableObject
+namespace AbubuResource.Audio.SFX
 {
-    public event Action<SfxRequest> OnRaised;
-    public void Raise(in SfxRequest req) => OnRaised?.Invoke(req);
-}
-
-public readonly struct SfxRequest
-{
-    public readonly string Id;
-    public readonly Vector3? Position;
-
-    public SfxRequest(string id, Vector3? pos = null)
+    [CreateAssetMenu(menuName = "Audio/PlaySfxChannel")]
+    public class PlaySfxChannel : ScriptableObject
     {
-        Id = id;
-        Position = pos;
+        public event Action<SfxRequest> OnRaised;
+        public void Raise(in SfxRequest req) => OnRaised?.Invoke(req);
+    }
+
+    public readonly struct SfxRequest
+    {
+        public readonly string Id;
+        public readonly Vector3? Position;
+
+        public SfxRequest(string id, Vector3? pos = null)
+        {
+            Id = id;
+            Position = pos;
+        }
     }
 }
