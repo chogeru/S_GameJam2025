@@ -286,7 +286,12 @@ MonoBehaviour:
   - NodeType: 1
   - NodeType: 2
   - NodeType: 3
-  - NodeType: 4
+  - NodeType: 1
+  - NodeType: 2
+  - NodeType: 1
+  - NodeType: 2
+  - NodeType: 3
+  - NodeType: 3
 --- !u!4 &568659789
 Transform:
   m_ObjectHideFlags: 0
