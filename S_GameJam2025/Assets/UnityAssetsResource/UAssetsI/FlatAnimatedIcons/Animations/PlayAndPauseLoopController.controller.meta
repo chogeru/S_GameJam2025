@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5d86870a12a365d419fe9cdf24b4edfb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 205683
+  packageName: 330+ Animated Loading Icons
+  packageVersion: 4.0
+  assetPath: Assets/FlatAnimatedIcons/Animations/PlayAndPauseLoopController.controller
+  uploadId: 478153
