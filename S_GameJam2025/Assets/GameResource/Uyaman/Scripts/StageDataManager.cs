@@ -29,6 +29,7 @@ public class StageDataManager : MonoBehaviour
 {
     private static StageDataManager m_instance;
     public static StageDataManager Instance => m_instance;
+    public static event Action OnBGTransformsUpdated;
 
     [SerializeField]
     private List<GameObject> m_straightImages;
@@ -186,6 +187,8 @@ public class StageDataManager : MonoBehaviour
             m_currentRightBGs[i].rectTransform.position = m_currentrightBGTransforms[i].position;
             m_currentRightBGs[i].rectTransform.localScale = m_currentrightBGTransforms[i].localScale;
         }
+        OnBGTransformsUpdated?.Invoke();
+
     }
 }
 

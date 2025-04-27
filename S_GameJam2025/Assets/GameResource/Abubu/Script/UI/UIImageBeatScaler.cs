@@ -53,6 +53,8 @@ namespace TelePresent.AudioSyncPro.UI
         public Color beatColor = Color.white;
 
         private Tween idleTween;
+        private List<Vector3> baseScales = new List<Vector3>();
+
         private void Start()
         {
             if (bgmSource == null)
@@ -70,27 +72,41 @@ namespace TelePresent.AudioSyncPro.UI
                 return;
             }
 
+            baseScales = new List<Vector3>(targets.Count);
+            foreach (var rt in targets)
+                baseScales.Add(rt.localScale);
+            StageDataManager.OnBGTransformsUpdated += UpdateBaseScales;
+
             StartIdleBreathing();
             ObserveBeatAsync().Forget();
         }
-
+        private void OnDestroy()
+        {
+            StageDataManager.OnBGTransformsUpdated -= UpdateBaseScales;
+        }
+        private void UpdateBaseScales()
+        {
+            baseScales.Clear();
+            foreach (var rt in targets)
+                baseScales.Add(rt.localScale);
+        }
         private void StartIdleBreathing()
         {
             idleTween = DOTween.To(
-                () => 0f,
-                t =>
-                {
-                    float s = Mathf.Lerp(minScale, minScale + (maxScale - minScale) * 0.1f, t);
-                    foreach (var rt in targets)
-                    {
-                        rt.localScale = new Vector3(s, s, 1f);
-                    }
-                },
-                1f,
-                2f
-            )
-            .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.InOutSine);
+              () => 0f,
+              t =>
+              {
+                  float sNorm = Mathf.Lerp(minScale, minScale + (maxScale - minScale) * 0.1f, t);
+                  for (int i = 0; i < targets.Count; i++)
+                  {
+                      targets[i].localScale = baseScales[i] * sNorm;
+                  }
+              },
+              1f,
+              2f
+          )
+          .SetLoops(-1, LoopType.Yoyo)
+          .SetEase(Ease.InOutSine);
         }
 
         private async UniTaskVoid ObserveBeatAsync()
@@ -100,54 +116,35 @@ namespace TelePresent.AudioSyncPro.UI
                 await UniTask.Delay(TimeSpan.FromSeconds(pollInterval),
                     cancellationToken: this.GetCancellationTokenOnDestroy());
 
-                if (!audioSync.isPlaying)
-                    continue;
+                if (!audioSync.isPlaying) continue;
 
                 float rms = Mathf.Clamp01(audioSync.rmsValue * sensitivity);
-
                 float eval = scaleCurve.Evaluate(rms);
-                float targetScale = Mathf.Lerp(minScale, maxScale, eval);
-
+                float targetScaleNorm = Mathf.Lerp(minScale, maxScale, eval);
                 bool isBeat = rms > beatThreshold;
-                if (isBeat)
-                {
-                    idleTween.Pause();
-                }
-                else
-                {
-                    if (!idleTween.IsPlaying())
-                        idleTween.Play();
-                }
+
+                if (isBeat) idleTween.Pause();
+                else if (!idleTween.IsPlaying()) idleTween.Play();
 
                 for (int i = 0; i < targets.Count; i++)
                 {
                     var rt = targets[i];
-                    float delay = i * 0.00f;
+                    var baseScale = baseScales[i];
 
-                    rt.DOScale(new Vector3(targetScale, targetScale, 1f), tweenDuration)
-                      .SetDelay(delay)
+                    var toScale = baseScale * targetScaleNorm;
+                    rt.DOScale(toScale, tweenDuration)
                       .SetEase(Ease.OutSine);
 
                     if (isBeat)
                     {
-                        var seq = DOTween.Sequence()
-                            .SetDelay(delay)
-                            .Join(rt.DOPunchScale(
-                                new Vector3(punchScaleStrength, punchScaleStrength, 0f),
-                                punchDuration, punchVibrato, punchElasticity
-                            ).SetEase(Ease.OutSine))
-                            .Join(rt.DOPunchAnchorPos(
-                                Vector2.up * punchPosStrength,
-                                punchDuration, punchVibrato, punchElasticity
-                            ).SetEase(Ease.OutSine))
-                            .Join(rt.DOPunchRotation(
-                                new Vector3(0f, 0f, punchRotStrength),
-                                punchDuration, punchVibrato, punchElasticity
-                            ).SetEase(Ease.OutSine))
-                            .OnComplete(() =>
-                            {
-                                idleTween.Restart();
-                            });
+                        DOTween.Sequence()
+                            .Join(rt.DOPunchScale(baseScale * punchScaleStrength, punchDuration, punchVibrato, punchElasticity)
+                                         .SetEase(Ease.OutSine))
+                            .Join(rt.DOPunchAnchorPos(Vector2.up * punchPosStrength, punchDuration, punchVibrato, punchElasticity)
+                                         .SetEase(Ease.OutSine))
+                            .Join(rt.DOPunchRotation(new Vector3(0, 0, punchRotStrength), punchDuration, punchVibrato, punchElasticity)
+                                         .SetEase(Ease.OutSine))
+                            .OnComplete(() => idleTween.Restart());
                     }
 
                     if (uiImage != null && isBeat)
@@ -155,8 +152,7 @@ namespace TelePresent.AudioSyncPro.UI
                         uiImage
                             .DOColor(beatColor, punchDuration * 0.5f)
                             .SetLoops(2, LoopType.Yoyo)
-                            .SetEase(Ease.OutSine)
-                            .SetDelay(delay);
+                            .SetEase(Ease.OutSine);
                     }
                 }
             }
