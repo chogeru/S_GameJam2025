@@ -1975,46 +1975,82 @@ MonoBehaviour:
   - NodeType: 0
     IsItem: 1
   - NodeType: 0
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 0
     IsItem: 1
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
   - NodeType: 0
     IsItem: 1
   - NodeType: 0
     IsItem: 1
   - NodeType: 0
-    IsItem: 1
+    IsItem: 0
   - NodeType: 0
-    IsItem: 1
+    IsItem: 0
   - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
+    IsItem: 0
   - NodeType: 0
     IsItem: 1
   - NodeType: 1
     IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 2
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 1
   - NodeType: 1
     IsItem: 0
-  - NodeType: 3
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 1
+  - NodeType: 2
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 2
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 1
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 2
     IsItem: 0
   - NodeType: 0
     IsItem: 1
   - NodeType: 0
-    IsItem: 1
+    IsItem: 0
+  - NodeType: 2
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 1
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 2
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
+  - NodeType: 2
+    IsItem: 0
+  - NodeType: 0
+    IsItem: 0
   - NodeType: 0
     IsItem: 1
   - NodeType: 0
-    IsItem: 1
+    IsItem: 0
   - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
-  - NodeType: 3
     IsItem: 1
 --- !u!4 &568659789
 Transform:
