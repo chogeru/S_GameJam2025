@@ -115,6 +115,17 @@ namespace TelePresent.AudioSyncPro
             previousClip = audioSource.clip;
         }
 
+        public AudioClip clip
+        {
+            get => audioSource.clip;
+            set => audioSource.clip = value;
+        }
+        public bool loop
+        {
+
+            get => audioSource.loop;
+            set => audioSource.loop = value;
+        }
 #if UNITY_EDITOR
         private void OnEnable()
         {
@@ -540,6 +551,20 @@ namespace TelePresent.AudioSyncPro
                 }
                 isDestroyed = true;
             }
+        }
+        public UnityEngine.Audio.AudioMixerGroup outputAudioMixerGroup
+        {
+            get => audioSource.outputAudioMixerGroup;
+            set => audioSource.outputAudioMixerGroup = value;
+        }
+        public void PlayDelayed(float delay)
+        {
+            if (audioSource != null)
+                audioSource.PlayDelayed(delay);
+        }
+        public void Stop()
+        {
+            StopAudio();
         }
 
         private void DestroyAudioSource()

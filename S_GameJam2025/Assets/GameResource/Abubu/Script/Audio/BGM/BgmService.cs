@@ -5,6 +5,7 @@ using Zenject;
 using UnityEngine.Audio;
 using Sirenix.OdinInspector;
 using System;
+using TelePresent.AudioSyncPro;
 
 namespace AbubuResource.Audio.BGM
 {
@@ -17,7 +18,7 @@ namespace AbubuResource.Audio.BGM
         [SerializeField] private AudioMixer _mixer;
         [SerializeField] private List<BgmStrategy> _strategies;
 
-        private AudioSource _source;
+        private AudioSourcePlus _source;
         private Dictionary<string, BgmStrategy> _map;
         [ShowInInspector, ReadOnly]
         public List<string> StrategyIds => _strategies.ConvertAll(s => s.Id);
@@ -26,7 +27,7 @@ namespace AbubuResource.Audio.BGM
         {
             _playChannel.OnRaised += id => { _ = Play(id); };
 
-            _source = gameObject.AddComponent<AudioSource>();
+            _source = gameObject.AddComponent<AudioSourcePlus>();
             _source.loop = true;
             var groups = _mixer.FindMatchingGroups("Master/BGM");
             if (groups != null && groups.Length > 0)
