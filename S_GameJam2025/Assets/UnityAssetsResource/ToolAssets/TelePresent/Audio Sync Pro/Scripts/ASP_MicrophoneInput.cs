@@ -13,10 +13,10 @@ namespace TelePresent.AudioSyncPro
 {
 
 
-    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(UnityEngine.AudioSource))]
     public class ASP_MicrophoneInput : MonoBehaviour
     {
-        private AudioSourcePlus audioSource;
+        private AudioSource audioSource;
 
         //void Start()
         //{

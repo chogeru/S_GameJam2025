@@ -29,10 +29,10 @@ namespace TelePresent.AudioSyncPro
         private Vector2 boxStartPos;
         public Rect selectionBox;
 
-        private AudioSourcePlus audioSourcePlus;
+        private AudioSource audioSourcePlus;
         public bool isResizingWaveform = false;
 
-        public ASP_AudioWaveformEditorInput(AudioSourcePlus _audioSourcePlus)
+        public ASP_AudioWaveformEditorInput(AudioSource _audioSourcePlus)
         {
             audioSourcePlus = _audioSourcePlus;
         }
@@ -473,7 +473,7 @@ namespace TelePresent.AudioSyncPro
             }
         }
 
-        public void HandleKeyboardInput(AudioSourcePlus audioSource)
+        public void HandleKeyboardInput(AudioSource audioSource)
         {
             Event currentEvent = Event.current;
 
@@ -492,7 +492,7 @@ namespace TelePresent.AudioSyncPro
         }
 
 
-        public void HandleMarkerKeyboardInput(List<ASP_Marker> markers, AudioSourcePlus audioSource)
+        public void HandleMarkerKeyboardInput(List<ASP_Marker> markers, AudioSource audioSource)
         {
             Event currentEvent = Event.current;
 
@@ -615,7 +615,7 @@ namespace TelePresent.AudioSyncPro
             }
         }
 
-        private void PasteMarker(List<ASP_Marker> markers, AudioSourcePlus audioSource)
+        private void PasteMarker(List<ASP_Marker> markers, AudioSource audioSource)
         {
             if (copiedMarker == null)
                 return;

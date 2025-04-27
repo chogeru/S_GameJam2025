@@ -26,12 +26,12 @@ namespace TelePresent.AudioSyncPro
         public float EffectDuration = 1f;
         public bool justTriggered;
         public Color justTriggeredColor = new Color(.5f, 2, .5f);
-        public AudioSourcePlus AudioSourcePlusReference;
+        public AudioSource AudioSourcePlusReference;
 
         [SerializeField]
         public List<ASP_DynamicPicker> DynamicPickers = new List<ASP_DynamicPicker>();
 
-        public ASP_Marker(AudioSourcePlus audioSourcePlus)
+        public ASP_Marker(AudioSource audioSourcePlus)
         {
             AudioSourcePlusReference = audioSourcePlus;
         }

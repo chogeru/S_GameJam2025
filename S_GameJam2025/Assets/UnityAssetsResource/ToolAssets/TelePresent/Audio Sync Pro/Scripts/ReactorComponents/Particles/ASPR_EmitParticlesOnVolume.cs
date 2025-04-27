@@ -55,7 +55,7 @@ namespace TelePresent.AudioSyncPro
             isInitialized = true;
         }
 
-        public void React(AudioSourcePlus audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
+        public void React(AudioSource audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
         {
             if (!isInitialized || !IsActive || targetParticleSystems == null || targetParticleSystems.Count == 0) return;
 

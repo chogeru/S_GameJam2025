@@ -80,7 +80,7 @@ namespace TelePresent.AudioSyncPro
         // Reacts to audio input and modifies the target components based on beats.
         // The rmsValue is a measure of the "loudness" of the audio input at the current frame.
         // The spectrumData is an array of values representing the audio spectrum.
-        public void React(AudioSourcePlus audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
+        public void React(AudioSource audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
         {
             if (!isInitialized || !IsActive) return;
 

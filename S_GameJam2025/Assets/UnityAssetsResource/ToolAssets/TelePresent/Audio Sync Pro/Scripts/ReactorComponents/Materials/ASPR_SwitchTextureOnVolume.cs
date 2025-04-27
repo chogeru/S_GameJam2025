@@ -107,7 +107,7 @@ namespace TelePresent.AudioSyncPro
             }
         }
 
-        public void React(AudioSourcePlus audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
+        public void React(AudioSource audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
         {
             if (!IsActive || propertyBlocks.Count == 0 || textureList == null || textureList.textures.Count == 0)
                 return;

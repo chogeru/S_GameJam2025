@@ -17,11 +17,11 @@ namespace TelePresent.AudioSyncPro
     public class ASP_PlayheadController : IDisposable
     {
         private bool isPlaying = false;
-        private AudioSourcePlus audioSourcePlus;
+        private AudioSource audioSourcePlus;
         private ASP_AudioWaveformEditorInput inputHandler;
         private bool isDraggingPlayhead = false;
 
-        public ASP_PlayheadController(AudioSourcePlus source, ASP_AudioWaveformEditorInput inputHandler)
+        public ASP_PlayheadController(AudioSource source, ASP_AudioWaveformEditorInput inputHandler)
         {
             audioSourcePlus = source;
             this.inputHandler = inputHandler;

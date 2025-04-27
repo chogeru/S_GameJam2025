@@ -43,7 +43,7 @@ namespace TelePresent.AudioSyncPro
             // No setup needed
         }
 
-        public void React(AudioSourcePlus audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
+        public void React(AudioSource audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
         {
             if (!IsActive) return;
 

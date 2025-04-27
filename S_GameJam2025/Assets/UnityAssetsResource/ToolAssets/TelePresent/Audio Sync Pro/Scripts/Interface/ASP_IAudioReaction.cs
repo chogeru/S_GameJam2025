@@ -14,7 +14,7 @@ namespace TelePresent.AudioSyncPro
     public interface ASP_IAudioReaction
     {
         void Initialize(Vector3 initialPosition, Vector3 initialScale, Quaternion initialRotation);
-        void React(AudioSourcePlus audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData);
+        void React(AudioSource audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData);
         void ResetToOriginalState(Transform targetTransform);
         bool IsActive { get; set; }
 

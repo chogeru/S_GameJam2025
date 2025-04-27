@@ -9,7 +9,7 @@ namespace TelePresent.AudioSyncPro
     public class ASP_DynamicPickerEditor
     {
         // Draw Dynamic Pickers for ASP_Marker with AudioSourcePlus support
-        public void DrawDynamicPickers(List<ASP_DynamicPicker> dynamicPickers, ASP_Marker marker, AudioSourcePlus audioSourcePlus)
+        public void DrawDynamicPickers(List<ASP_DynamicPicker> dynamicPickers, ASP_Marker marker, AudioSource audioSourcePlus)
         {
             for (int i = dynamicPickers.Count - 1; i >= 0; i--) // Iterate backwards to avoid deletion issues
             {
@@ -22,7 +22,7 @@ namespace TelePresent.AudioSyncPro
 
 
         // Editor GUI for AudioSourcePlus version
-        private void DrawDynamicPickerInspector(ASP_DynamicPicker dynamicPicker, int index, List<ASP_DynamicPicker> dynamicPickers, AudioSourcePlus audioSourcePlus)
+        private void DrawDynamicPickerInspector(ASP_DynamicPicker dynamicPicker, int index, List<ASP_DynamicPicker> dynamicPickers, AudioSource audioSourcePlus)
         {
             if (dynamicPicker == null) return;
 
@@ -174,7 +174,7 @@ namespace TelePresent.AudioSyncPro
 
     
         // DrawParameterField overload for AudioSourcePlus
-        private void DrawParameterField(System.Reflection.ParameterInfo parameter, ASP_SerializedParameter parameterProp, AudioSourcePlus audioSourcePlus)
+        private void DrawParameterField(System.Reflection.ParameterInfo parameter, ASP_SerializedParameter parameterProp, AudioSource audioSourcePlus)
         {
             if (parameterProp == null)
             {

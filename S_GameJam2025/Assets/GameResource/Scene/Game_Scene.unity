@@ -6470,6 +6470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 1998881303}
+  audioInitDelay: 0.5
   targets:
   - {fileID: 122373652}
   - {fileID: 1170232838}
@@ -6518,6 +6519,7 @@ MonoBehaviour:
   punchElasticity: 0.3
   uiImage: {fileID: 0}
   beatColor: {r: 1, g: 1, b: 1, a: 1}
+  sampleWindowSize: 1024
 --- !u!1001 &4513886578369531170
 PrefabInstance:
   m_ObjectHideFlags: 0

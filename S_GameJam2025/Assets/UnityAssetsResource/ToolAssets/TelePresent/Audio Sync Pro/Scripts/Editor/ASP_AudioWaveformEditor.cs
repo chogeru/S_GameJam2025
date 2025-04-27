@@ -14,7 +14,7 @@ using System;
 
 namespace TelePresent.AudioSyncPro
 {
-    [CustomEditor(typeof(AudioSourcePlus))]
+    [CustomEditor(typeof(AudioSource))]
     public class ASP_AudioWaveformEditor : Editor
     {
         private const float CurveHeight = 300f;
@@ -32,8 +32,8 @@ namespace TelePresent.AudioSyncPro
 
         private float[] cachedWaveform;
         private AudioClip cachedClip;
-        private AudioSourcePlus audioSourcePlus;
-        private AudioSource audioSource;
+        private AudioSource audioSourcePlus;
+        private UnityEngine.AudioSource audioSource;
 
         private Rect waveformRect;
         private ASP_AudioWaveformEditorInput inputHandler;
@@ -63,7 +63,7 @@ namespace TelePresent.AudioSyncPro
 
         private void OnEnable()
         {
-            audioSourcePlus = (AudioSourcePlus)target;
+            audioSourcePlus = (AudioSource)target;
             audioSource = audioSourcePlus.audioSource;
 
             if (audioSource == null)
@@ -132,7 +132,7 @@ namespace TelePresent.AudioSyncPro
         [MenuItem("CONTEXT/AudioSourcePlus/Toggle AudioSource Visibility")]
         private static void ToggleAudioSourceVisibility(MenuCommand command)
         {
-            AudioSourcePlus audioSourcePlus = (AudioSourcePlus)command.context;
+            AudioSource audioSourcePlus = (AudioSource)command.context;
             audioSourcePlus.showAudioSource = !audioSourcePlus.showAudioSource;
             audioSourcePlus.ToggleAudioSourceVisibility(audioSourcePlus.showAudioSource);
             EditorUtility.SetDirty(audioSourcePlus);
@@ -141,10 +141,10 @@ namespace TelePresent.AudioSyncPro
         [MenuItem("CONTEXT/AudioSourcePlus/Remove AudioSourcePlus (Keep AudioSource)")]
         private static void RemoveAudioSourcePlusSkipDestroy(MenuCommand command)
         {
-            AudioSourcePlus audioSourcePlus = (AudioSourcePlus)command.context;
+            AudioSource audioSourcePlus = (AudioSource)command.context;
             audioSourcePlus.ToggleAudioSourceVisibility(true);
             audioSourcePlus.skipCustomDestruction = true;
-            AudioSource _audioSource = audioSourcePlus.audioSource;
+            UnityEngine.AudioSource _audioSource = audioSourcePlus.audioSource;
             DestroyImmediate(audioSourcePlus);
             _audioSource.enabled = true;
         }
@@ -408,7 +408,7 @@ namespace TelePresent.AudioSyncPro
             GUIUtility.ExitGUI();
         }
 
-        private ASP_Marker DuplicateMarker(ASP_Marker original, AudioSourcePlus audioSourcePlus)
+        private ASP_Marker DuplicateMarker(ASP_Marker original, AudioSource audioSourcePlus)
         {
             ASP_Marker newMarker = original.DeepCopy();
             newMarker.AudioSourcePlusReference = audioSourcePlus;
@@ -431,7 +431,7 @@ namespace TelePresent.AudioSyncPro
         }
 
 
-        private void DrawCurveEditor(AudioSourcePlus _audioSourcePlus)
+        private void DrawCurveEditor(AudioSource _audioSourcePlus)
         {
             float graphWidth = EditorGUIUtility.currentViewWidth - 2 * Margin;
             Rect curveRect = GUILayoutUtility.GetRect(graphWidth, CurveHeight);
@@ -934,7 +934,7 @@ namespace TelePresent.AudioSyncPro
             }
         }
 
-        private void HandleInput(AudioSourcePlus audioWaveform)
+        private void HandleInput(AudioSource audioWaveform)
         {
             if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseUp)
             {

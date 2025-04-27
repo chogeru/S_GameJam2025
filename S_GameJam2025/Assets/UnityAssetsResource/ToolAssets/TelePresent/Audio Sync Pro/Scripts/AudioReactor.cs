@@ -18,7 +18,7 @@ namespace TelePresent.AudioSyncPro
     [ExecuteInEditMode]
     public class AudioReactor : MonoBehaviour
     {
-        public AudioSourcePlus audioSourcePlus;
+        public AudioSource audioSourcePlus;
         public Transform targetTransform;
         [SerializeField]
         public List<MonoBehaviour> reactionComponents;
@@ -38,7 +38,7 @@ namespace TelePresent.AudioSyncPro
         private HashSet<MonoBehaviour> destroyedReactions = new HashSet<MonoBehaviour>();
 
 
-        private AudioSourcePlus previousAudioSourcePlus;
+        private AudioSource previousAudioSourcePlus;
         private void Awake()
         {
             if (targetTransform == null && !Application.isPlaying)
@@ -46,7 +46,7 @@ namespace TelePresent.AudioSyncPro
                 targetTransform = this.transform;
                 if (audioSourcePlus == null)
                 {
-                    AudioSourcePlus[] audioSourcePluses = FindObjectsByType<AudioSourcePlus>(FindObjectsSortMode.None);
+                    AudioSource[] audioSourcePluses = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
                     if (audioSourcePluses.Length == 1)
                     {
                         audioSourcePlus = audioSourcePluses[0];
@@ -236,7 +236,7 @@ namespace TelePresent.AudioSyncPro
 
 
 
-        private void SubscribeToAudioEvents(AudioSourcePlus source)
+        private void SubscribeToAudioEvents(AudioSource source)
         {
             if (source == null) return;
 
@@ -244,7 +244,7 @@ namespace TelePresent.AudioSyncPro
             source.OnAudioStopped += OnAudioStopped;
         }
 
-        private void UnsubscribeFromAudioEvents(AudioSourcePlus source)
+        private void UnsubscribeFromAudioEvents(AudioSource source)
         {
             if (source == null) return;
 

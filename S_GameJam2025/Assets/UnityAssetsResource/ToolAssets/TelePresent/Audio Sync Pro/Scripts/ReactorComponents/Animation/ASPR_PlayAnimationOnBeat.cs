@@ -81,7 +81,7 @@ namespace TelePresent.AudioSyncPro
 
         public void Initialize(Vector3 initialPosition, Vector3 initialScale, Quaternion initialRotation) { }
 
-        public void React(AudioSourcePlus audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
+        public void React(AudioSource audioSourcePlus, Transform targetTransform, float rmsValue, float[] spectrumData)
         {
             if (!IsActive || animator == null) return;
 

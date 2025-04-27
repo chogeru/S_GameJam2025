@@ -22,10 +22,10 @@ using System.Collections;
 namespace TelePresent.AudioSyncPro
 {
     [ExecuteInEditMode]
-    public class AudioSourcePlus : MonoBehaviour
+    public class AudioSource : MonoBehaviour
     {
         [HideInInspector]
-        public AudioSource audioSource;
+        public UnityEngine.AudioSource audioSource;
         public event Action OnAudioStopped;
         public event Action OnAudioStarted;
         bool playingOneShot;
@@ -160,10 +160,10 @@ namespace TelePresent.AudioSyncPro
         {
             if (audioSource == null)
             {
-                audioSource = gameObject.GetComponent<AudioSource>();
+                audioSource = gameObject.GetComponent<UnityEngine.AudioSource>();
                 if (audioSource == null)
                 {
-                    audioSource = gameObject.AddComponent<AudioSource>();
+                    audioSource = gameObject.AddComponent<UnityEngine.AudioSource>();
                 }
             }
             ToggleAudioSourceVisibility(showAudioSource);

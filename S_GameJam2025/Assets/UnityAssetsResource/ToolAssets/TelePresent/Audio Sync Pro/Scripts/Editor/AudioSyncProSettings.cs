@@ -25,8 +25,8 @@ namespace TelePresent.AudioSyncPro
         private static readonly Color DefaultOutlineColor = new Color32(0xFF, 0xD6, 0x07, 0xFF);
         private static readonly Color DefaultFillColor = new Color32(0xFF, 0xBB, 0x00, 0xFF);
 
-        private List<AudioSourcePlus> audioSourcePlusList = new List<AudioSourcePlus>();
-        private List<AudioSource> audioSourceList = new List<AudioSource>();
+        private List<AudioSource> audioSourcePlusList = new List<AudioSource>();
+        private List<UnityEngine.AudioSource> audioSourceList = new List<UnityEngine.AudioSource>();
 
         private bool showAudioSourcePlusSection = false;
         private bool showAudioSourceSection = false;
@@ -312,10 +312,10 @@ namespace TelePresent.AudioSyncPro
             {
                 GUILayout.BeginHorizontal();
 
-                audioSourcePlusList[i] = (AudioSourcePlus)EditorGUILayout.ObjectField(
+                audioSourcePlusList[i] = (AudioSource)EditorGUILayout.ObjectField(
                     $"AudioSourcePlus {i + 1}",
                     audioSourcePlusList[i],
-                    typeof(AudioSourcePlus),
+                    typeof(AudioSource),
                     true
                 );
 
@@ -342,10 +342,10 @@ namespace TelePresent.AudioSyncPro
             {
                 GUILayout.BeginHorizontal();
 
-                audioSourceList[i] = (AudioSource)EditorGUILayout.ObjectField(
+                audioSourceList[i] = (UnityEngine.AudioSource)EditorGUILayout.ObjectField(
                     $"AudioSource {i + 1}",
                     audioSourceList[i],
-                    typeof(AudioSource),
+                    typeof(UnityEngine.AudioSource),
                     true
                 );
 
@@ -368,32 +368,32 @@ namespace TelePresent.AudioSyncPro
 
         private void GatherAllAudioSourcePlus()
         {
-            AudioSourcePlus[] audioSources = Object.FindObjectsByType<AudioSourcePlus>(FindObjectsSortMode.None);
+            AudioSource[] audioSources = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
             audioSourcePlusList.Clear();
             audioSourcePlusList.AddRange(audioSources);
         }
 
         private void GatherAllAudioSources()
         {
-            AudioSource[] allAudioSources = Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+            UnityEngine.AudioSource[] allAudioSources = Object.FindObjectsByType<UnityEngine.AudioSource>(FindObjectsSortMode.None);
             audioSourceList.Clear();
 
-            foreach (AudioSource audioSource in allAudioSources)
+            foreach (UnityEngine.AudioSource audioSource in allAudioSources)
             {
-                if (audioSource.GetComponent<AudioSourcePlus>() == null)
+                if (audioSource.GetComponent<AudioSource>() == null)
                 {
                     audioSourceList.Add(audioSource);
                 }
             }
         }
 
-        private void ConvertToAudioSourcePlus(AudioSource audioSource)
+        private void ConvertToAudioSourcePlus(UnityEngine.AudioSource audioSource)
         {
             if (audioSource != null)
             {
                 Undo.RegisterCompleteObjectUndo(audioSource.gameObject, "Convert to AudioSourcePlus");
 
-                AudioSourcePlus audioSourcePlus = audioSource.gameObject.AddComponent<AudioSourcePlus>();
+                AudioSource audioSourcePlus = audioSource.gameObject.AddComponent<AudioSource>();
                 audioSourcePlus.audioSource = audioSource;
 
                 EditorUtility.SetDirty(audioSourcePlus);
@@ -410,7 +410,7 @@ namespace TelePresent.AudioSyncPro
             audioSourceList.Clear();
         }
 
-        private void RevertAudioSourcePlusComponent(AudioSourcePlus audioSourcePlus)
+        private void RevertAudioSourcePlusComponent(AudioSource audioSourcePlus)
         {
             if (audioSourcePlus != null)
             {
@@ -424,7 +424,7 @@ namespace TelePresent.AudioSyncPro
                 Undo.RegisterCompleteObjectUndo(audioSourcePlus, "Revert AudioSourcePlus");
                 audioSourcePlus.skipCustomDestruction = true;
                 bool enabledState = audioSourcePlus.enabled;
-                AudioSource audioSource = audioSourcePlus.audioSource;
+                UnityEngine.AudioSource audioSource = audioSourcePlus.audioSource;
 
                 Undo.DestroyObjectImmediate(audioSourcePlus);
                 audioSource.enabled = enabledState;

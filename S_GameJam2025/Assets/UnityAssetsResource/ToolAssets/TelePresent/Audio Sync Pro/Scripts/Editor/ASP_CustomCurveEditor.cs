@@ -18,7 +18,7 @@ namespace TelePresent.AudioSyncPro
         [SerializeField]
         private float maxDistance = 500f;
 
-        public static AudioSourcePlus audioSourcePlus;
+        public static AudioSource audioSourcePlus;
         public static ASP_AudioWaveformEditor audioWaveformEditor;
 
         private bool[] showCurves;
@@ -33,7 +33,7 @@ namespace TelePresent.AudioSyncPro
 
         private static readonly string[] curveNames = { "Custom Rolloff", "Spatial Blend", "Spread", "Reverb Zone Mix" };
 
-        public static void ShowWindow(AudioSourcePlus sourcePlus)
+        public static void ShowWindow(AudioSource sourcePlus)
         {
             audioSourcePlus = sourcePlus;
 

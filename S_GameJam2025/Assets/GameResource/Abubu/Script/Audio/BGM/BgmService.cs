@@ -18,7 +18,7 @@ namespace AbubuResource.Audio.BGM
         [SerializeField] private AudioMixer _mixer;
         [SerializeField] private List<BgmStrategy> _strategies;
 
-        private AudioSourcePlus _source;
+        private UnityEngine.AudioSource _source;
         private Dictionary<string, BgmStrategy> _map;
         [ShowInInspector, ReadOnly]
         public List<string> StrategyIds => _strategies.ConvertAll(s => s.Id);
@@ -27,7 +27,7 @@ namespace AbubuResource.Audio.BGM
         {
             _playChannel.OnRaised += id => { _ = Play(id); };
 
-            _source = gameObject.AddComponent<AudioSourcePlus>();
+            _source = gameObject.AddComponent<UnityEngine.AudioSource>();
             _source.loop = true;
             var groups = _mixer.FindMatchingGroups("Master/BGM");
             if (groups != null && groups.Length > 0)

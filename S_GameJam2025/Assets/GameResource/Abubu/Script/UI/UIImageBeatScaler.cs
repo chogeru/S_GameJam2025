@@ -11,7 +11,8 @@ namespace TelePresent.AudioSyncPro.UI
     public class UIImageBeatScaler : MonoBehaviour
     {
         [SerializeField] private GameObject bgmSource;
-        private AudioSourcePlus audioSync;
+        private UnityEngine.AudioSource audioSync;
+        public float audioInitDelay = 0.5f;
 
         [SerializeField, ListDrawerSettings(Expanded = true, ShowIndexLabels = true)]
         private List<RectTransform> targets = new List<RectTransform>();
@@ -55,70 +56,84 @@ namespace TelePresent.AudioSyncPro.UI
         private Tween idleTween;
         private List<Vector3> baseScales = new List<Vector3>();
 
+        [BoxGroup("オーディオクリップ設定"), MinValue(128)]
+        public int sampleWindowSize = 1024;
+        private float[] sampleBuffer;
+
         private void Start()
         {
-            if (bgmSource == null)
+            InitializeAsync().Forget();
+        }
+
+        private async UniTaskVoid InitializeAsync()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(audioInitDelay), cancellationToken: this.GetCancellationTokenOnDestroy());
+
+            audioSync = bgmSource.GetComponent<UnityEngine.AudioSource>();
+            if (audioSync == null || audioSync.clip == null)
             {
-                Debug.LogError("[UIImageBeatScaler] BGMManager が割り当てられていません。");
-                enabled = false;
+                Debug.LogError("AudioSource または AudioClip が見つかりません。");
                 return;
             }
 
-            audioSync = bgmSource.GetComponent<AudioSourcePlus>();
-            if (audioSync == null)
-            {
-                Debug.LogError("[UIImageBeatScaler] 割り当てた BGMManager に AudioSourcePlus が見つかりません。");
-                enabled = false;
-                return;
-            }
+            sampleBuffer = new float[sampleWindowSize];
 
             baseScales = new List<Vector3>(targets.Count);
             foreach (var rt in targets)
                 baseScales.Add(rt.localScale);
+
             StageDataManager.OnBGTransformsUpdated += UpdateBaseScales;
 
             StartIdleBreathing();
             ObserveBeatAsync().Forget();
         }
+
         private void OnDestroy()
         {
             StageDataManager.OnBGTransformsUpdated -= UpdateBaseScales;
         }
+
         private void UpdateBaseScales()
         {
             baseScales.Clear();
             foreach (var rt in targets)
                 baseScales.Add(rt.localScale);
         }
+
         private void StartIdleBreathing()
         {
             idleTween = DOTween.To(
-              () => 0f,
-              t =>
-              {
-                  float sNorm = Mathf.Lerp(minScale, minScale + (maxScale - minScale) * 0.1f, t);
-                  for (int i = 0; i < targets.Count; i++)
-                  {
-                      targets[i].localScale = baseScales[i] * sNorm;
-                  }
-              },
-              1f,
-              2f
-          )
-          .SetLoops(-1, LoopType.Yoyo)
-          .SetEase(Ease.InOutSine);
+                () => 0f,
+                t =>
+                {
+                    float sNorm = Mathf.Lerp(minScale, minScale + (maxScale - minScale) * 0.1f, t);
+                    for (int i = 0; i < targets.Count; i++)
+                        targets[i].localScale = baseScales[i] * sNorm;
+                },
+                1f,
+                2f
+            )
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
         }
 
         private async UniTaskVoid ObserveBeatAsync()
         {
             while (true)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(pollInterval),
-                    cancellationToken: this.GetCancellationTokenOnDestroy());
+                await UniTask.Delay(TimeSpan.FromSeconds(pollInterval), cancellationToken: this.GetCancellationTokenOnDestroy());
 
                 if (!audioSync.isPlaying) continue;
 
-                float rms = Mathf.Clamp01(audioSync.rmsValue * sensitivity);
+                int samplePos = audioSync.timeSamples;
+                int startSample = Mathf.Clamp(samplePos - sampleWindowSize / 2, 0, audioSync.clip.samples - sampleWindowSize);
+                audioSync.clip.GetData(sampleBuffer, startSample);
+
+                float sum = 0f;
+                for (int i = 0; i < sampleWindowSize; i++)
+                    sum += sampleBuffer[i] * sampleBuffer[i];
+                float rms = Mathf.Clamp01(Mathf.Sqrt(sum / sampleWindowSize) * sensitivity);
+
                 float eval = scaleCurve.Evaluate(rms);
                 float targetScaleNorm = Mathf.Lerp(minScale, maxScale, eval);
                 bool isBeat = rms > beatThreshold;
@@ -131,30 +146,18 @@ namespace TelePresent.AudioSyncPro.UI
                     var rt = targets[i];
                     var baseScale = baseScales[i];
 
-                    var toScale = baseScale * targetScaleNorm;
-                    rt.DOScale(toScale, tweenDuration)
-                      .SetEase(Ease.OutSine);
+                    rt.DOScale(baseScale * targetScaleNorm, tweenDuration).SetEase(Ease.OutSine);
 
                     if (isBeat)
                     {
                         DOTween.Sequence()
-                            .Join(rt.DOPunchScale(baseScale * punchScaleStrength, punchDuration, punchVibrato, punchElasticity)
-                                         .SetEase(Ease.OutSine))
-                            .Join(rt.DOPunchAnchorPos(Vector2.up * punchPosStrength, punchDuration, punchVibrato, punchElasticity)
-                                         .SetEase(Ease.OutSine))
-                            .Join(rt.DOPunchRotation(new Vector3(0, 0, punchRotStrength), punchDuration, punchVibrato, punchElasticity)
-                                         .SetEase(Ease.OutSine))
+                            .Join(rt.DOPunchScale(baseScale * punchScaleStrength, punchDuration, punchVibrato, punchElasticity).SetEase(Ease.OutSine))
+                            .Join(rt.DOPunchAnchorPos(Vector2.up * punchPosStrength, punchDuration, punchVibrato, punchElasticity).SetEase(Ease.OutSine))
+                            .Join(rt.DOPunchRotation(new Vector3(0, 0, punchRotStrength), punchDuration, punchVibrato, punchElasticity).SetEase(Ease.OutSine))
                             .OnComplete(() => idleTween.Restart());
                     }
-
-                    if (uiImage != null && isBeat)
-                    {
-                        uiImage
-                            .DOColor(beatColor, punchDuration * 0.5f)
-                            .SetLoops(2, LoopType.Yoyo)
-                            .SetEase(Ease.OutSine);
-                    }
                 }
+
             }
         }
     }

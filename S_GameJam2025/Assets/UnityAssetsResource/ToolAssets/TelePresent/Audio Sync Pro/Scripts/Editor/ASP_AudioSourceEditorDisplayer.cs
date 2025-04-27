@@ -19,13 +19,13 @@ namespace TelePresent.AudioSyncPro
         private const float Margin = 5f;
         private static AnimationCurve originalCurve1; 
 
-        public static void InitialiseCurves(AudioSourcePlus audioSourcePlus)
+        public static void InitialiseCurves(AudioSource audioSourcePlus)
         {
             // Set the first curve in the audiosource curves to be equal to .5f, 0f.
             audioSourcePlus.audioCurves[1] = new AnimationCurve(new Keyframe(0.5f, 0f));
         }
 
-        public static void DrawAudioSourceProperties(AudioSourcePlus audioSourcePlus)
+        public static void DrawAudioSourceProperties(AudioSource audioSourcePlus)
         {
             if (audioSourcePlus.audioSource == null)
             {
@@ -124,7 +124,7 @@ namespace TelePresent.AudioSyncPro
         }
 
 
-        public static void DrawPlaybackSettings(AudioSource audioSource)
+        public static void DrawPlaybackSettings(UnityEngine.AudioSource audioSource)
         {
             if (audioSource == null)
             {
@@ -172,7 +172,7 @@ namespace TelePresent.AudioSyncPro
             audioSource.loop = isLooping;
         }
 
-        public static void DrawSoundSettings(AudioSourcePlus audioSourcePlus)
+        public static void DrawSoundSettings(AudioSource audioSourcePlus)
         {
             if (audioSourcePlus.audioSource == null)
             {
@@ -207,7 +207,7 @@ namespace TelePresent.AudioSyncPro
 
         public static void Draw3DSettings()
         {
-            AudioSourcePlus audioSourcePlus = ASP_CustomCurveEditor.audioSourcePlus;
+            AudioSource audioSourcePlus = ASP_CustomCurveEditor.audioSourcePlus;
             // Track previous values to detect changes
             float prevSpread = audioSourcePlus.audioSource.spread;
             float prevReverbZoneMix = audioSourcePlus.audioSource.reverbZoneMix;
@@ -292,7 +292,7 @@ namespace TelePresent.AudioSyncPro
             }
         }
 
-        private static void ManageCurve1Locking(AudioSourcePlus audioSourcePlus)
+        private static void ManageCurve1Locking(AudioSource audioSourcePlus)
         {
             AnimationCurve curve1 = audioSourcePlus.audioCurves[1];
 

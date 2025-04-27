@@ -65,7 +65,7 @@ namespace TelePresent.AudioSyncPro
             }
         }
 
-        public void LoadProfile(AudioSourcePlus audioSourcePlus)
+        public void LoadProfile(AudioSource audioSourcePlus)
         {
             foreach (var marker in markerList)
             {
