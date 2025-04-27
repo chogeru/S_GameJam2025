@@ -112,19 +112,26 @@ namespace AbubuResource.Scene
             op.allowSceneActivation = false;
 
             StartCoroutine(PlayAfterDelay());
+
             yield return Slide(panelWidth, 0f);
 
-            while (op.progress < 0.9f) yield return null;
-            if (centerPause > 0f) yield return new WaitForSeconds(centerPause);
-            yield return Slide(0f, -panelWidth);
+            while (op.progress < 0.9f)
+                yield return null;
+
+            if (centerPause > 0f)
+                yield return new WaitForSeconds(centerPause);
 
             op.allowSceneActivation = true;
-            while (!op.isDone) yield return null;
+            while (!op.isDone)
+                yield return null;
+
+            yield return Slide(0f, -panelWidth);
 
             Application.backgroundLoadingPriority = ThreadPriority.Normal;
             ResetPanel();
             panelAnimator?.Stop();
         }
+
 
         private IEnumerator PlayAfterDelay()
         {
