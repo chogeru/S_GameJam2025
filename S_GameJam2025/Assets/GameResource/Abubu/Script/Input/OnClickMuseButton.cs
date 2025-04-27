@@ -6,10 +6,11 @@ public class OnClickMuseButton : MonoBehaviour
 {
     private void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if ((Mouse.current.rightButton.wasPressedThisFrame ||
+              Mouse.current.middleButton.wasPressedThisFrame)
+             && !SceneDirector.Instance.IsTransitioning)
         {
-            if (!SceneDirector.Instance.IsTransitioning)
-                SceneDirector.Instance.NextScene();
+            SceneDirector.Instance.NextScene();
         }
     }
 }
