@@ -42,7 +42,8 @@ public class GameMainSequence : MonoBehaviour
         {
             Debug.Log("カーブに失敗した");
             UdonInfoManager.Instance.CurveFailed = true;
-            UdonInfoManager.Instance.PartsCount = Mathf.Max(0, UdonInfoManager.Instance.PartsCount - 1);
+            UdonInfoManager.Instance.RemoveParts();
+            UdonInfoManager.Instance.RemoveOjama();
         }
         // アイテム取得に失敗した
         if (m_isWaitingItemInputPress)
@@ -84,14 +85,14 @@ public class GameMainSequence : MonoBehaviour
         {
             // TODO アイテムゲット
             Debug.Log("アイテムゲット");
-            UdonInfoManager.Instance.PartsCount++;
+            UdonInfoManager.Instance.AddParts();
         }
         // アイテムが取得できないのにアイテムをゲットした
         else
         {
             //TODO お邪魔アイテムゲット
             Debug.Log("お邪魔アイテムゲット");
-            UdonInfoManager.Instance.AddOjamaItem();
+            UdonInfoManager.Instance.AddOjama();
         }
 
         m_isItemInputPressed = true;
@@ -116,6 +117,8 @@ public class GameMainSequence : MonoBehaviour
             // TODO 最後にゲットしたアイテムを一つ落とす
             Debug.Log("最後にゲットしたアイテムを一つ落とす");
             UdonInfoManager.Instance.CurveFailed = true;
+            UdonInfoManager.Instance.RemoveParts();
+            UdonInfoManager.Instance.RemoveOjama();
         }
 
         m_isCurveInputPressed = true;

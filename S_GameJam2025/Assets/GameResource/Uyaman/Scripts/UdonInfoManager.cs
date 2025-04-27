@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -39,10 +40,26 @@ public class UdonInfoManager : MonoBehaviour
 
     }
 
-    public void AddOjamaItem()
+    public void AddParts()
     {
-        OjamaCount++;
+        PartsCount = Mathf.Clamp(PartsCount + 1, 0, PartsItemObjs.Count - 1);
     }
+
+    public void RemoveParts()
+    {
+        PartsCount = Mathf.Clamp(PartsCount - 1, 0, PartsItemObjs.Count - 1);
+    }
+
+    public void AddOjama()
+    {
+        OjamaCount = Mathf.Clamp(OjamaCount + 1, 0, OjamaItemObjs.Count - 1);
+    }
+
+    public void RemoveOjama()
+    {
+        OjamaCount = Mathf.Clamp(OjamaCount - 1, 0, OjamaItemObjs.Count - 1);
+    }
+
 
     // Update is called once per frame
     void Update()

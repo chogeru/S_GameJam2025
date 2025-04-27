@@ -1535,12 +1535,12 @@ MonoBehaviour:
     IsItem: 1
   - NodeType: 0
     IsItem: 1
-  - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
-  - NodeType: 0
-    IsItem: 1
+  - NodeType: 1
+    IsItem: 0
+  - NodeType: 1
+    IsItem: 0
+  - NodeType: 1
+    IsItem: 0
   - NodeType: 0
     IsItem: 1
   - NodeType: 0
