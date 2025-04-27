@@ -1,4 +1,5 @@
 using FunkyCode;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UniRx;
@@ -13,7 +14,6 @@ public enum StageNodeType
     None,
     Left,
     Right,
-    Item,
     Goal
 }
 
@@ -22,6 +22,7 @@ public struct StageNode
 {
     [SerializeField]
     public StageNodeType NodeType;
+    public bool IsItem;
 }
 
 public class StageDataManager : MonoBehaviour
@@ -141,9 +142,6 @@ public class StageDataManager : MonoBehaviour
                     m_curveRight.SetActive(true);
                     m_currentLeftBGTransforms = m_leftBGTransformsRightCurve;
                     m_currentrightBGTransforms = m_rightBGTransformsRightCurve;
-                    break;
-                case StageNodeType.Item:
-                    GoStraight();
                     break;
                 case StageNodeType.Goal:
                     break;

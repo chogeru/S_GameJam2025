@@ -1,6 +1,7 @@
 using UnityEngine;
 using UniRx;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class GameMainSequence : MonoBehaviour
 {
@@ -9,6 +10,12 @@ public class GameMainSequence : MonoBehaviour
     private bool m_isItemInputPressed;
     private bool m_isCurveInputPressed;
     TestActions m_inputActions;
+
+    [SerializeField]
+    GameObject m_ExcellentObj;
+
+    [SerializeField]
+    private float m_tickInterval;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,10 +35,14 @@ public class GameMainSequence : MonoBehaviour
 
     void OnRhythmTick(float deltaTime)
     {
+        UdonInfoManager.Instance.CurveFailed = false;
+
         // カーブに失敗した
         if (m_isWaitingCurveInputPress)
         {
             Debug.Log("カーブに失敗した");
+            UdonInfoManager.Instance.CurveFailed = true;
+            UdonInfoManager.Instance.PartsCount = Mathf.Max(0, UdonInfoManager.Instance.PartsCount - 1);
         }
         // アイテム取得に失敗した
         if (m_isWaitingItemInputPress)
@@ -53,11 +64,12 @@ public class GameMainSequence : MonoBehaviour
             case StageNodeType.Right:
                 StartWaitCurveInputPress();
                 break;
-            case StageNodeType.Item:
-                StartWaitItemInputPress();
-                break;
             default:
                 break;
+        }
+        if (StageDataManager.Instance.GetCurrentNode.IsItem)
+        {
+            StartWaitItemInputPress();
         }
     }
 
@@ -72,12 +84,14 @@ public class GameMainSequence : MonoBehaviour
         {
             // TODO アイテムゲット
             Debug.Log("アイテムゲット");
+            UdonInfoManager.Instance.PartsCount++;
         }
         // アイテムが取得できないのにアイテムをゲットした
         else
         {
             //TODO お邪魔アイテムゲット
             Debug.Log("お邪魔アイテムゲット");
+            UdonInfoManager.Instance.AddOjamaItem();
         }
 
         m_isItemInputPressed = true;
@@ -94,12 +108,14 @@ public class GameMainSequence : MonoBehaviour
         {
             // TODO ドリフトエフェクト再生
             Debug.Log("ドリフトエフェクト再生");
+            StartCoroutine(StartExcellentCorutine());
         }
         // カーブの必要がないのにカーブを押した
         else
         {
             // TODO 最後にゲットしたアイテムを一つ落とす
             Debug.Log("最後にゲットしたアイテムを一つ落とす");
+            UdonInfoManager.Instance.CurveFailed = true;
         }
 
         m_isCurveInputPressed = true;
@@ -120,7 +136,14 @@ public class GameMainSequence : MonoBehaviour
 
     public void StartGame()
     {
-        RhythmTicker.Instance.SetTimerConfig(1.0f);
+        RhythmTicker.Instance.SetTimerConfig(m_tickInterval);
         RhythmTicker.Instance.StartTimer();
+    }
+
+    IEnumerator StartExcellentCorutine()
+    {
+        m_ExcellentObj.SetActive(true);
+        yield return new WaitForSeconds(m_tickInterval * 2);
+        m_ExcellentObj.SetActive(false);
     }
 }
