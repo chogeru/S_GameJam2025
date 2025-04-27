@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-public abstract class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
+public abstract class SingletonBehaviour<T> : SerializedMonoBehaviour where T : SerializedMonoBehaviour
 {
     protected virtual void Awake()
     {

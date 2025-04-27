@@ -1126,7 +1126,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &331889364
 MonoBehaviour:
@@ -1142,8 +1142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swingTargets:
   - {fileID: 1324888399}
-  swingAngle: 12
-  swingSec: 1.8
+  swingAngle: 16
+  swingSec: 1.4
   popTargets:
   - {fileID: 761730812}
   - {fileID: 1465448586}
@@ -8270,6 +8270,50 @@ PrefabInstance:
       propertyPath: postProcessVolume
       value: 
       objectReference: {fileID: 276419644}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[0].sfxId
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[1].sfxId
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[2].sfxId
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.data[0].sfxId
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.data[1].sfxId
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.data[2].sfxId
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.data[0].sceneName
+      value: Title
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.data[1].sceneName
+      value: Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: sceneSfxList.Array.data[2].sceneName
+      value: Game
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -8455,8 +8499,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -2944962365252923183, guid: 538d0492042663a4ea08a20f4fc21a8f, type: 2}
     - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
+      propertyPath: _configs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
       propertyPath: _configs.Array.data[0].Id
       value: "\u30DC\u30BF\u30F3\u30AF\u30EA\u30C3\u30AF"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
+      propertyPath: _configs.Array.data[2].Id
+      value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
+      propertyPath: _configs.Array.data[2].Clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3869acd6d658bab45a8ac6e4768b2482, type: 3}
+    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
+      propertyPath: _configs.Array.data[2].PoolSize
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

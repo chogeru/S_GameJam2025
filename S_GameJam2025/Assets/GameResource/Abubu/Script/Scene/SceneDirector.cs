@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
+using AbubuResource.Audio.SFX;
+using Zenject;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,6 +23,12 @@ namespace AbubuResource.Scene
         [SerializeField]
         private List<SceneEntry> scenes = new List<SceneEntry>();
 
+        [Title("シーン切替時の SFX 設定")]
+        [TableList(AlwaysExpanded = true, DrawScrollView = true, ShowIndexLabels = true)]
+        [InfoBox("シーン名ごとに再生する SFX を設定します", InfoMessageType.Info)]
+        [SerializeField]
+        private List<SceneSfxEntry> sceneSfxList = new List<SceneSfxEntry>();
+
         [Title("スライドトランジション設定")]
         [Required, SerializeField]
         private RectTransform slidePanel;
@@ -29,43 +38,39 @@ namespace AbubuResource.Scene
 
         [BoxGroup("スライドトランジション設定")]
         [LabelText("補間カーブ"), Tooltip("スライド時のイージングカーブ設定")]
-        [SerializeField] private AnimationCurve slideCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);  // イージングカーブ
+        [SerializeField]
+        private AnimationCurve slideCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-        [Title("スライドトランジション設定")]
-        [Required, SerializeField]
+        [Required, SerializeField, BoxGroup("スライドトランジション設定")]
         private PanelChildAnimator panelAnimator;
-        [SerializeField,Tooltip("中央で静止する秒数")]
-        float centerPause = 0.6f;
-        [SerializeField,Tooltip("パネルが滑り始めてから子画像アニメを再生するまでの遅延秒数")]
-        float childAnimDelay = 0.3f;
+
+        [SerializeField, Tooltip("中央で静止する秒数"), BoxGroup("スライドトランジション設定")]
+        private float centerPause = 0.6f;
+
+        [SerializeField, Tooltip("子画像アニメ開始までの遅延秒数"), BoxGroup("スライドトランジション設定")]
+        private float childAnimDelay = 0.3f;
+
+        [Inject]
+        private PlaySfxChannel _playChannel;
 
         private float panelWidth;
 
-        private void Awake()
+        protected override void Awake()
         {
-            DontDestroyOnLoad(gameObject);
+            base.Awake();
             Canvas.ForceUpdateCanvases();
             panelWidth = slidePanel.rect.width;
             slidePanel.anchoredPosition = new Vector2(panelWidth, 0f);
         }
 
-        [Serializable]
-        public class SceneEntry : ISceneInfo
-        {
 #if UNITY_EDITOR
-            [HorizontalGroup("Row", 90), HideLabel, PreviewField(64)]
-            public SceneAsset sceneAsset;
-#endif
-            [HorizontalGroup("Row")]
-            [ReadOnly]
-            public string sceneName;
-
-            [Button("シーンをロード"), HorizontalGroup("Row", Width = 90)]
-            [GUIColor(0.2f, 0.6f, 1f)]
-            private void LoadScene() => SceneDirector.Instance.Load(sceneName);
-
-            public string Name => sceneName;
+        private void OnValidate()
+        {
+            foreach (var e in scenes)
+                if (e?.sceneAsset != null)
+                    e.sceneName = e.sceneAsset.name;
         }
+#endif
 
         public void Load(string sceneName)
         {
@@ -74,12 +79,35 @@ namespace AbubuResource.Scene
 
         public void Load(int buildIndex)
         {
-            StartCoroutine(LoadWithTransition(buildIndex));
+            // BuildIndex からシーン名を取得する正しい方法
+            var path = SceneUtility.GetScenePathByBuildIndex(buildIndex);
+            var name = System.IO.Path.GetFileNameWithoutExtension(path);
+            StartCoroutine(LoadWithTransition(name));
         }
 
-        IEnumerator LoadWithTransition(string sceneName)
+        public void ReloadCurrent()
+        {
+            var cur = SceneManager.GetActiveScene();
+            Load(cur.buildIndex);
+        }
+
+        public void NextScene()
+        {
+            int next = (SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings;
+            Load(next);
+        }
+
+        public void PreviousScene()
+        {
+            int idx = SceneManager.GetActiveScene().buildIndex;
+            int prev = idx == 0 ? SceneManager.sceneCountInBuildSettings - 1 : idx - 1;
+            Load(prev);
+        }
+
+        private IEnumerator LoadWithTransition(string sceneName)
         {
             Application.backgroundLoadingPriority = ThreadPriority.Low;
+            PlaySfxForScene(sceneName);
 
             var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             op.allowSceneActivation = false;
@@ -88,9 +116,7 @@ namespace AbubuResource.Scene
             yield return Slide(panelWidth, 0f);
 
             while (op.progress < 0.9f) yield return null;
-
             if (centerPause > 0f) yield return new WaitForSeconds(centerPause);
-
             yield return Slide(0f, -panelWidth);
 
             op.allowSceneActivation = true;
@@ -101,35 +127,12 @@ namespace AbubuResource.Scene
             panelAnimator?.Stop();
         }
 
-
-        private IEnumerator LoadWithTransition(int buildIndex)
-        {
-            Application.backgroundLoadingPriority = ThreadPriority.Low;
-
-            var op = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Single);
-            op.allowSceneActivation = false;
-
-            StartCoroutine(PlayAfterDelay());
-            yield return Slide(panelWidth, 0f);
-
-            while (op.progress < 0.9f) yield return null;
-
-            if (centerPause > 0f) yield return new WaitForSeconds(centerPause);
-
-            yield return Slide(0f, -panelWidth);
-
-            op.allowSceneActivation = true;
-            while (!op.isDone) yield return null;
-
-            Application.backgroundLoadingPriority = ThreadPriority.Normal;
-            ResetPanel();
-            panelAnimator?.Stop();
-        }
-        IEnumerator PlayAfterDelay()
+        private IEnumerator PlayAfterDelay()
         {
             yield return new WaitForSeconds(childAnimDelay);
             panelAnimator?.Play();
         }
+
         private IEnumerator Slide(float fromX, float toX)
         {
             float elapsed = 0f;
@@ -150,50 +153,69 @@ namespace AbubuResource.Scene
             slidePanel.anchoredPosition = new Vector2(panelWidth, 0f);
         }
 
-        /// <summary>現在アクティブなシーンをリロード</summary>
-        public void ReloadCurrent()
+        private void PlaySfxForScene(string sceneName)
         {
-            var current = SceneManager.GetActiveScene();
-            Load(current.buildIndex);
+            var entry = sceneSfxList.FirstOrDefault(x => x.sceneName == sceneName);
+            if (entry != null && !string.IsNullOrEmpty(entry.sfxId) && entry.sfxId != "<No SFX>")
+                _playChannel.Raise(new SfxRequest(entry.sfxId));
         }
 
-        /// <summary>次のシーンをロード</summary>
-        public void NextScene()
+        public IEnumerable<string> GetAvailableSfxIds()
         {
-            int nextIndex = (SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings;
-            Load(nextIndex);
+            var svc = FindAnyObjectByType<SfxService>();
+            return (svc != null && svc.SeIds != null && svc.SeIds.Count > 0)
+                ? svc.SeIds
+                : new[] { "<No SFX>" };
         }
 
-        /// <summary>前のシーンをロード</summary>
-        public void PreviousScene()
+        public IEnumerable<string> GetSceneNames()
         {
-            int currentIndex = SceneManager.GetActiveScene().buildIndex;
-            int prevIndex = currentIndex == 0 ? SceneManager.sceneCountInBuildSettings - 1 : currentIndex - 1;
-            Load(prevIndex);
+            return scenes != null
+                ? scenes.Select(e => e.sceneName)
+                : Enumerable.Empty<string>();
         }
 
         [TitleGroup("デバッグ")]
-        [Button(ButtonSizes.Large)]
-        [GUIColor(0.4f, 0.8f, 0.4f)]
+        [Button(ButtonSizes.Large), GUIColor(0.4f, 0.8f, 0.4f)]
         private void DebugReload() => ReloadCurrent();
 
-        [Button(ButtonSizes.Large)]
-        [GUIColor(0.2f, 0.6f, 1f)]
+        [Button(ButtonSizes.Large), GUIColor(0.2f, 0.6f, 1f)]
         private void DebugNext() => NextScene();
 
-        [Button(ButtonSizes.Large)]
-        [GUIColor(1f, 0.4f, 0.4f)]
+        [Button(ButtonSizes.Large), GUIColor(1f, 0.4f, 0.4f)]
         private void DebugPrevious() => PreviousScene();
 
-#if UNITY_EDITOR
-        private void OnValidate()
+
+        [Serializable]
+        public class SceneEntry : ISceneInfo
         {
-            foreach (var entry in scenes)
-            {
-                if (entry?.sceneAsset != null)
-                    entry.sceneName = entry.sceneAsset.name;
-            }
-        }
+#if UNITY_EDITOR
+            [HorizontalGroup("Row", 90), HideLabel, PreviewField(64)]
+            public SceneAsset sceneAsset;
 #endif
+            [HorizontalGroup("Row"), ReadOnly]
+            public string sceneName;
+
+            [LabelText("再生する SFX ID")]
+            [ValueDropdown("@( SceneDirector.Instance != null ? SceneDirector.Instance.GetAvailableSfxIds() : (IEnumerable<string>)new string[0] )")]
+            public string sfxId;
+
+            [Button("シーンをロード"), HorizontalGroup("Row", Width = 90), GUIColor(0.2f, 0.6f, 1f)]
+            private void LoadScene() => SceneDirector.Instance.Load(sceneName);
+
+            public string Name => sceneName;
+        }
+
+        [Serializable]
+        private class SceneSfxEntry
+        {
+            [LabelText("シーン名")]
+            [ValueDropdown("@( SceneDirector.Instance != null ? SceneDirector.Instance.GetSceneNames() : (IEnumerable<string>)new string[0] )")]
+            public string sceneName;
+
+            [LabelText("SFX ID")]
+            [ValueDropdown("@( SceneDirector.Instance != null ? SceneDirector.Instance.GetAvailableSfxIds() : (IEnumerable<string>)new string[0] )")]
+            public string sfxId;
+        }
     }
 }
