@@ -12,6 +12,12 @@ public class GameMainSequence : MonoBehaviour
     TestActions m_inputActions;
 
     [SerializeField]
+    private GameObject m_curveNotify;
+    [SerializeField]
+    private GameObject m_itemNotify;
+
+
+    [SerializeField]
     GameObject m_ExcellentObj;
 
     [SerializeField]
@@ -35,8 +41,11 @@ public class GameMainSequence : MonoBehaviour
 
     void OnRhythmTick(float deltaTime)
     {
+        m_curveNotify.SetActive(false);
+        m_itemNotify.SetActive(false);
+        if (StageDataManager.Instance.GetCurrentNode.NodeType == StageNodeType.Goal)
+            return;
         UdonInfoManager.Instance.CurveFailed = false;
-
         // カーブに失敗した
         if (m_isWaitingCurveInputPress)
         {
@@ -129,12 +138,14 @@ public class GameMainSequence : MonoBehaviour
     {
         m_isWaitingCurveInputPress = true;
         Debug.Log("カーブ中");
+        m_curveNotify.SetActive(true);
     }
 
     void StartWaitItemInputPress()
     {
         m_isWaitingItemInputPress = true;
         Debug.Log("アイテム取得可能");
+        m_itemNotify.SetActive(true);
     }
 
     public void StartGame()

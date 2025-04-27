@@ -94,6 +94,7 @@ public class UdonInfoManager : MonoBehaviour
         }
         else
         {
+            m_failedCar.SetActive(false);
             switch (StageDataManager.Instance.GetCurrentNode.NodeType)
             {
                 case StageNodeType.None:
