@@ -1773,38 +1773,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SEControl
       objectReference: {fileID: 0}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _sfxMixerGroup
-      value: 
-      objectReference: {fileID: -2944962365252923183, guid: 538d0492042663a4ea08a20f4fc21a8f, type: 2}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.data[0].Id
-      value: "\u30DC\u30BF\u30F3\u30AF\u30EA\u30C3\u30AF"
-      objectReference: {fileID: 0}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.data[1].Id
-      value: "\u30DC\u30BF\u30F3\u30AF\u30ED\u30FC\u30BA"
-      objectReference: {fileID: 0}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.data[0].Clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 611ddfd1082265c45a86d0da33d1f1d9, type: 3}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.data[1].Clip
-      value: 
-      objectReference: {fileID: 8300000, guid: b02e48b766e1f4245865bfbe328c8762, type: 3}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.data[0].PoolSize
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8573693932816074760, guid: 39308e98193480a4da06ab110f93427d, type: 3}
-      propertyPath: _configs.Array.data[1].PoolSize
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

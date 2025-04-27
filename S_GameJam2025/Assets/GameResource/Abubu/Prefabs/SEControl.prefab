@@ -45,7 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configs:
-  - Id: 1
-    Clip: {fileID: 8300000, guid: 779477d04272ec341a21c8436c95ca1e, type: 3}
-    PoolSize: 10
-  _sfxMixerGroup: {fileID: 0}
+  - Id: "\u30DC\u30BF\u30F3\u30AF\u30EA\u30C3\u30AF"
+    Clip: {fileID: 8300000, guid: 611ddfd1082265c45a86d0da33d1f1d9, type: 3}
+    PoolSize: 5
+  - Id: "\u30DC\u30BF\u30F3\u30AF\u30ED\u30FC\u30BA"
+    Clip: {fileID: 8300000, guid: b02e48b766e1f4245865bfbe328c8762, type: 3}
+    PoolSize: 3
+  _sfxMixerGroup: {fileID: -2944962365252923183, guid: 538d0492042663a4ea08a20f4fc21a8f, type: 2}
