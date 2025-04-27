@@ -17,6 +17,6 @@ public class ReturnToMenu : MonoBehaviour
 
     public void OnClickReturnToMenu()
     {
-        SceneManager.LoadScene("Title_Scene")
+        SceneManager.LoadScene("Title_Scene");
     }
 }

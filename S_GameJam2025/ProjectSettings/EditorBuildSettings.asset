@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameResource/Scene/Game_Scene.unity
     guid: 9fd9860f87811ce46a2e20619a79e852
+  - enabled: 1
+    path: Assets/GameResource/Uyaman/Scene/TestScene.unity
+    guid: dfaeeb7228259424e9bf27eca3237b28
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
