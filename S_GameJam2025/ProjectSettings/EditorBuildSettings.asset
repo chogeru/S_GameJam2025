@@ -6,15 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GameResource/Abubu/Scene/TestMultiScene/Title.unity
-    guid: 546e56b46e657354bb1470decef8ffd0
-  - enabled: 1
-    path: Assets/GameResource/Abubu/Scene/TestMultiScene/Menu.unity
-    guid: 0897f04c488be0c43a004f2590f64af4
-  - enabled: 1
-    path: Assets/GameResource/Abubu/Scene/TestMultiScene/Game.unity
-    guid: 79d9c168e36d2424db94c7974cfd31f2
-  - enabled: 1
     path: Assets/GameResource/Scene/Title_Scene.unity
     guid: 9fc7a9551f3fc514f840f7af2a52a790
   - enabled: 1

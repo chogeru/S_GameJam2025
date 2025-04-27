@@ -107,7 +107,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       m_ConstantMin: 0
-      m_ConstantMax: 40
+      m_ConstantMax: 30
     xCurve:
       m_Mode: 0
       m_CurveMultiplier: 0
@@ -291,8 +291,8 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_GradientMax:
       serializedVersion: 2
-      key0: {r: 0, g: 0.7555051, b: 1, a: 1}
-      key1: {r: 0, g: 0.18552971, b: 1, a: 1}
+      key0: {r: 1, g: 0.90395236, b: 0, a: 1}
+      key1: {r: 1, g: 0.80021334, b: 0, a: 1}
       key2: {r: 0, g: 0.18552971, b: 1, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

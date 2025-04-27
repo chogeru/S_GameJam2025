@@ -54,6 +54,8 @@ namespace AbubuResource.Scene
         private PlaySfxChannel _playChannel;
 
         private float panelWidth;
+        private bool isTransitioning = false;
+        public bool IsTransitioning => isTransitioning;
 
         protected override void Awake()
         {
@@ -105,6 +107,8 @@ namespace AbubuResource.Scene
 
         private IEnumerator LoadWithTransition(string sceneName)
         {
+            if (isTransitioning) yield break;
+            isTransitioning = true;
             Application.backgroundLoadingPriority = ThreadPriority.Low;
             PlaySfxForScene(sceneName);
 
@@ -130,6 +134,7 @@ namespace AbubuResource.Scene
             Application.backgroundLoadingPriority = ThreadPriority.Normal;
             ResetPanel();
             panelAnimator?.Stop();
+            isTransitioning = false;
         }
 
 

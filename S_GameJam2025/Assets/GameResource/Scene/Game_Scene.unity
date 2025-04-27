@@ -1564,6 +1564,7 @@ MonoBehaviour:
   - {fileID: 1545232584}
   - {fileID: 1117403925}
   - {fileID: 2040408872}
+  m_nonGoalObjParent: {fileID: 0}
   m_BGImages:
   - {fileID: 122373653}
   - {fileID: 1170232839}
@@ -1574,6 +1575,8 @@ MonoBehaviour:
   - {fileID: 584301668}
   - {fileID: 41598810}
   - {fileID: 1484184210}
+  m_goalObjParent: {fileID: 0}
+  m_goalObjs: []
   m_debugNodes:
   - NodeType: 0
     IsItem: 1
@@ -3323,6 +3326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabb9fe1024dc814b86094fc395c9fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_curveNotify: {fileID: 0}
+  m_itemNotify: {fileID: 0}
   m_ExcellentObj: {fileID: 2052488974}
   m_tickInterval: 0.5
 --- !u!4 &1620415163
