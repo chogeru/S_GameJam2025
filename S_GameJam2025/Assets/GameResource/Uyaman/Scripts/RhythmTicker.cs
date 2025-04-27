@@ -1,8 +1,8 @@
 using System;
-using System.Timers;
 using UnityEngine;
 using UniRx;
 using UnityEngine.Events;
+using System.Collections;
 
 public class RhythmTicker : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class RhythmTicker : MonoBehaviour
 
     // MonoBehaviourの関数はメインスレッドでしか処理されないので、TimerでTickCountを増やしておいてUpdateでTickCount分の処理を行う
     int m_tickCountWhileThisFrame = 0;
-    private Timer m_timer;
 
     private void Awake()
     {
@@ -35,29 +34,16 @@ public class RhythmTicker : MonoBehaviour
 
     public void SetTimerConfig(float intervalSeconds)
     {
-        if (m_timer != null)
-        {
-            m_timer.Dispose();
-        }
-        m_timer = new Timer(intervalSeconds * 1000);
-        // Hook up the Elapsed event for the timer. 
-        m_timer.Elapsed += (sender, e) =>
-        {
-            m_tickCountWhileThisFrame++;
-        };
-        m_timer.AutoReset = true;
-        m_timer.Enabled = true;
+        TickIntervalSeconds = intervalSeconds;
     }
 
     public void StopTimer()
     {
-        m_timer.Stop();
     }
 
     public void StartTimer()
     {
-        // Elapsedイベントにタイマー発生時の処理を設定する
-        m_timer.Start();
+        StartCoroutine(TimerCoroutine(TickIntervalSeconds));
     }
 
     private void Update()
@@ -73,7 +59,15 @@ public class RhythmTicker : MonoBehaviour
 
     private void OnDestroy()
     {
-        m_timer?.Stop();
-        m_timer = null;
+
+    }
+
+    private IEnumerator TimerCoroutine(float interval)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(interval);
+            m_tickCountWhileThisFrame++;
+        }
     }
 }
