@@ -36,6 +36,8 @@ public class SettingsMenuController : MonoBehaviour
     [SerializeField] private GameObject soundPanel;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider sfxSlider;
+    [SerializeField] private TextMeshProUGUI bgmValueText;
+    [SerializeField] private TextMeshProUGUI sfxValueText;
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Button backFromSoundBtn;
 
@@ -169,12 +171,12 @@ public class SettingsMenuController : MonoBehaviour
             settingsPanel.SetActive(false);
             settingsBtn.gameObject.SetActive(true);
 
-            // Transform をリセット
             settingsPanelRT.anchoredPosition = Vector2.zero;
             settingsPanelRT.localScale = Vector3.one;
             settingsPanelRT.localRotation = Quaternion.identity;
 
             closeBtn.interactable = true;
+            closeBtn.gameObject.SetActive(false);
         });
     }
 
@@ -237,16 +239,22 @@ public class SettingsMenuController : MonoBehaviour
             .DOScale(initScale, 0.15f));
         trigger.triggers.Add(exit);
     }
-
+    private float SliderValueToDecibel(float value)
+    {
+        if (value <= 0f) return -80f;
+        return Mathf.Log10(value) * 20f;
+    }
     private void ApplyAllSettings()
     {
         bgmSlider.value = data.bgmVolume;
         sfxSlider.value = data.sfxVolume;
+        bgmValueText.text = data.bgmVolume.ToString("F2");
+        sfxValueText.text = data.sfxVolume.ToString("F2");
         resolutionDropdown.value = data.resolutionIndex;
         postFxToggle.isOn = data.postProcessing;
 
-        audioMixer.SetFloat("BGMVolume", Mathf.Lerp(-80f, 0f, data.bgmVolume));
-        audioMixer.SetFloat("SFXVolume", Mathf.Lerp(-80f, 0f, data.sfxVolume));
+        audioMixer.SetFloat("BGM", SliderValueToDecibel(data.bgmVolume));
+        audioMixer.SetFloat("SFX", SliderValueToDecibel(data.sfxVolume));
         ApplyPostFX(data.postProcessing);
     }
 
@@ -266,8 +274,8 @@ public class SettingsMenuController : MonoBehaviour
         ApplyResolution(resolutionDropdown.value);
     }
 
-    private void OnBgmChanged(float value) { data.bgmVolume = value; audioMixer.SetFloat("BGMVolume", Mathf.Lerp(-80f, 0f, value)); SaveSettings(); }
-    private void OnSfxChanged(float value) { data.sfxVolume = value; audioMixer.SetFloat("SFXVolume", Mathf.Lerp(-80f, 0f, value)); SaveSettings(); }
+    private void OnBgmChanged(float value) { data.bgmVolume = value; bgmValueText.text = value.ToString("F2"); audioMixer.SetFloat("BGM", SliderValueToDecibel(value)); SaveSettings(); }
+    private void OnSfxChanged(float value) { data.sfxVolume = value; sfxValueText.text = value.ToString("F2"); audioMixer.SetFloat("SFX", SliderValueToDecibel(value)); SaveSettings(); }
     private void OnResolutionChanged(int idx) { data.resolutionIndex = idx; ApplyResolution(idx); SaveSettings(); }
     private void OnPostFxChanged(bool en) { data.postProcessing = en; ApplyPostFX(en); SaveSettings(); }
 
