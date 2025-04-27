@@ -24,7 +24,7 @@ public class GameMainSequence : MonoBehaviour
         m_inputActions.RhythmGame.Curve.performed += CurveAction_performed;
         m_inputActions.RhythmGame.Item.performed += ItemAction_performed;
         m_inputActions.Enable();
-        StartGame();
+        StartCoroutine(StartGameTimer(3));
     }
 
     // Update is called once per frame
@@ -148,5 +148,14 @@ public class GameMainSequence : MonoBehaviour
         m_ExcellentObj.SetActive(true);
         yield return new WaitForSeconds(m_tickInterval * 2);
         m_ExcellentObj.SetActive(false);
+    }
+
+    IEnumerator StartGameTimer(int seconds)
+    {
+        for (int i = 0; i < seconds; i++)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        StartGame();
     }
 }

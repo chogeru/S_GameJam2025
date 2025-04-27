@@ -57,14 +57,21 @@ public class StageDataManager : MonoBehaviour
     private List<RectTransform> m_currentrightBGTransforms;
 
     [SerializeField]
+    private GameObject m_nonGoalObjParent;
+
+    [SerializeField]
     private List<Image> m_BGImages;
     private List<Image> m_currentRightBGs;
     private List<Image> m_currentLeftBGs;
 
-#if UNITY_EDITOR
+    [SerializeField]
+    private GameObject m_goalObjParent;
+    [SerializeField]
+    private List<GameObject> m_goalObjs;
+    private int m_currentGoalIndex = 0;
+
     [SerializeField]
     private List<StageNode> m_debugNodes;
-#endif
 
     private List<StageNode> m_nodes = new List<StageNode>();
     private int m_currentNodePosition;
@@ -90,9 +97,7 @@ public class StageDataManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-#if UNITY_EDITOR
         m_nodes = new List<StageNode>(m_debugNodes);
-#endif
         RhythmTicker.Instance.TickerObservable.Subscribe(time => OnRhythmTick(time));
 
         m_currentRightBGs = new List<Image>();
@@ -132,23 +137,29 @@ public class StageDataManager : MonoBehaviour
             {
                 case StageNodeType.None:
                     GoStraight();
+                    MoveBG();
                     break;
                 case StageNodeType.Left:
                     m_curveLeft.SetActive(true);
                     m_currentLeftBGTransforms = m_leftBGTransformsLeftCurce;
                     m_currentrightBGTransforms = m_rightBGTransformsLeftCurve;
+                    MoveBG();
                     break;
                 case StageNodeType.Right:
                     m_curveRight.SetActive(true);
                     m_currentLeftBGTransforms = m_leftBGTransformsRightCurve;
                     m_currentrightBGTransforms = m_rightBGTransformsRightCurve;
+                    MoveBG();
                     break;
                 case StageNodeType.Goal:
                     break;
                 default:
                     break;
             }
-            MoveBG();
+        }
+        if (GetCurrentNode.NodeType == StageNodeType.Goal)
+        {
+            GoalRhythm();
         }
         Debug.Log(GetCurrentNode.NodeType);
     }
@@ -186,6 +197,17 @@ public class StageDataManager : MonoBehaviour
             m_currentRightBGs[i].rectTransform.position = m_currentrightBGTransforms[i].position;
             m_currentRightBGs[i].rectTransform.localScale = m_currentrightBGTransforms[i].localScale;
         }
+    }
+
+    void GoalRhythm()
+    {
+        m_nonGoalObjParent.SetActive(false);
+        m_goalObjParent.SetActive(true);
+        if (m_currentGoalIndex > 0)
+            m_goalObjs[m_currentGoalIndex - 1].SetActive(false);
+        m_goalObjs[m_currentGoalIndex].SetActive(true);
+        if (m_currentGoalIndex < m_goalObjs.Count - 1)
+            m_currentGoalIndex++;
     }
 }
 

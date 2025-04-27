@@ -78,22 +78,22 @@ public class UdonInfoManager : MonoBehaviour
             OjamaItemObjs[i].SetActive(false);
         }
 
+        for (int i = 0; i < PartsCount; i++)
+        {
+            if (i < PartsItemObjs.Count)
+                PartsItemObjs[i].SetActive(true);
+        }
+        for (int i = 0; i < OjamaCount; i++)
+        {
+            if (i < OjamaItemObjs.Count)
+                OjamaItemObjs[i].SetActive(true);
+        }
         if (CurveFailed)
         {
             m_failedCar.SetActive(true);
         }
         else
         {
-            for (int i = 0; i < PartsCount; i++)
-            {
-                if (i < PartsItemObjs.Count)
-                    PartsItemObjs[i].SetActive(true);
-            }
-            for (int i = 0; i < OjamaCount; i++)
-            {
-                if (i < OjamaItemObjs.Count)
-                    OjamaItemObjs[i].SetActive(true);
-            }
             switch (StageDataManager.Instance.GetCurrentNode.NodeType)
             {
                 case StageNodeType.None:
