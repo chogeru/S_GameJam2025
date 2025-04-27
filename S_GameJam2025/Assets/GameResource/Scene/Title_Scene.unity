@@ -8277,7 +8277,7 @@ PrefabInstance:
     - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
       propertyPath: scenes.Array.data[0].sfxId
       value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
@@ -8290,6 +8290,22 @@ PrefabInstance:
       propertyPath: scenes.Array.data[2].sfxId
       value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
       objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[0].sceneName
+      value: Title_Scene
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[1].sceneName
+      value: Game_Scene
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[0].sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 9fc7a9551f3fc514f840f7af2a52a790, type: 3}
+    - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
+      propertyPath: scenes.Array.data[1].sceneAsset
+      value: 
+      objectReference: {fileID: 102900000, guid: 9fd9860f87811ce46a2e20619a79e852, type: 3}
     - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
       propertyPath: sceneSfxList.Array.data[0].sfxId
       value: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
@@ -8304,11 +8320,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
       propertyPath: sceneSfxList.Array.data[0].sceneName
-      value: Title
+      value: Title_Scene
       objectReference: {fileID: 0}
     - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
       propertyPath: sceneSfxList.Array.data[1].sceneName
-      value: Menu
+      value: Game_Scene
       objectReference: {fileID: 0}
     - target: {fileID: 3269275136515876372, guid: dcf1a96915ce9824d949cc15b481340c, type: 3}
       propertyPath: sceneSfxList.Array.data[2].sceneName
@@ -8398,9 +8414,21 @@ PrefabInstance:
       value: BGMControl
       objectReference: {fileID: 0}
     - target: {fileID: 8525819588957076465, guid: 38f4faa7dd3fa524c81de1f4d0eb4284, type: 3}
+      propertyPath: _strategies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525819588957076465, guid: 38f4faa7dd3fa524c81de1f4d0eb4284, type: 3}
       propertyPath: _strategies.Array.data[0].Clip
       value: 
       objectReference: {fileID: 8300000, guid: 58c33536c16bad6499731ac15c910f00, type: 3}
+    - target: {fileID: 8525819588957076465, guid: 38f4faa7dd3fa524c81de1f4d0eb4284, type: 3}
+      propertyPath: _strategies.Array.data[1].Clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 933dd6ba72f140a4898ac6779f26dfd7, type: 3}
+    - target: {fileID: 8525819588957076465, guid: 38f4faa7dd3fa524c81de1f4d0eb4284, type: 3}
+      propertyPath: _strategies.Array.data[1].FadeDuration
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

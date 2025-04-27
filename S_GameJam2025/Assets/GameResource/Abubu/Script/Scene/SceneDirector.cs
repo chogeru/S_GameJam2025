@@ -79,7 +79,6 @@ namespace AbubuResource.Scene
 
         public void Load(int buildIndex)
         {
-            // BuildIndex からシーン名を取得する正しい方法
             var path = SceneUtility.GetScenePathByBuildIndex(buildIndex);
             var name = System.IO.Path.GetFileNameWithoutExtension(path);
             StartCoroutine(LoadWithTransition(name));
@@ -205,12 +204,10 @@ namespace AbubuResource.Scene
 
             public string Name => sceneName;
         }
-
         [Serializable]
         private class SceneSfxEntry
         {
             [LabelText("シーン名")]
-            [ValueDropdown("@( SceneDirector.Instance != null ? SceneDirector.Instance.GetSceneNames() : (IEnumerable<string>)new string[0] )")]
             public string sceneName;
 
             [LabelText("SFX ID")]
