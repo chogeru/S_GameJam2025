@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ReturnToMenu : MonoBehaviour
 {
@@ -16,6 +17,6 @@ public class ReturnToMenu : MonoBehaviour
 
     public void OnClickReturnToMenu()
     {
-
+        SceneManager.LoadScene("Title_Scene")
     }
 }
